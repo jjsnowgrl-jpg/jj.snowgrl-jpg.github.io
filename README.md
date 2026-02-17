@@ -1,3 +1,4 @@
+[relay (1).html](https://github.com/user-attachments/files/25363141/relay.1.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#1a1f2e;color:#cdd5e8;font-family:'IBM Plex Mono',monospace;height:100vh;overflow:hidden;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:#1a1f2e;color:#cdd5e8;font-family:'IBM Plex Mono',monospace;}
   button{font-family:inherit;cursor:pointer;}
   button:hover{filter:brightness(1.12);}
-  input{font-family:inherit;}
-  input:focus{outline:none;}
+  input{font-family:inherit;outline:none;}
 
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.45}}
   @keyframes handsGlow{0%,100%{box-shadow:0 0 0 4px #fde68a55,0 8px 32px #f59e0b66}50%{box-shadow:0 0 0 8px #fde68a88,0 8px 48px #f59e0b99}}
@@ -24,9 +25,10 @@
   ::-webkit-scrollbar-thumb{background:#2e3850;border-radius:4px;}
 
   /* ── SCREENS ── */
-  #screen-setup,#screen-mode,#screen-app{display:none;height:100vh;}
-  #screen-setup.active,#screen-mode.active{display:flex;align-items:center;justify-content:center;}
-  #screen-app.active{display:flex;flex-direction:column;}
+  .screen{display:none;height:100vh;}
+  .screen.active{display:flex;}
+  #screen-setup.active,#screen-mode.active{align-items:center;justify-content:center;}
+  #screen-app.active{flex-direction:column;}
 
   .splash-card{background:#20273a;border:1px solid #2e3850;border-radius:18px;padding:40px 48px;text-align:center;box-shadow:0 8px 40px #00000055;max-width:500px;width:100%;}
   .splash-logo{font-size:30px;font-weight:800;letter-spacing:0.2em;color:#e2e8f8;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:10px;}
@@ -48,7 +50,7 @@
   .mode-btn.boh{border:1px solid #7c2d0a;}
 
   /* ── HEADER ── */
-  #app-header{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#20273a;border-bottom:1px solid #2e3850;position:sticky;top:0;z-index:200;box-shadow:0 1px 6px #00000033;flex-shrink:0;}
+  #app-header{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#20273a;border-bottom:1px solid #2e3850;z-index:200;box-shadow:0 1px 6px #00000033;flex-shrink:0;}
   .h-title{font-size:17px;font-weight:800;letter-spacing:0.2em;color:#e2e8f8;}
   .h-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid;letter-spacing:0.06em;}
   .h-alerts{display:flex;gap:8px;align-items:center;flex:1;margin-left:6px;}
@@ -63,7 +65,7 @@
   .hands-banner{background:#1c1600;border-bottom:2px solid #d97706;padding:10px 22px;font-size:13px;color:#fde047;letter-spacing:0.04em;text-align:center;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;}
 
   /* ── BODY ── */
-  #app-body{display:flex;flex:1;overflow:hidden;}
+  #app-body{display:flex;flex:1;overflow:hidden;min-height:0;}
 
   /* ── GRID PANEL ── */
   #grid-panel{flex:1;padding:18px 20px;overflow-y:auto;border-right:1px solid #2e3850;background:#1e2436;}
@@ -95,7 +97,8 @@
   .dismiss-btn{border-radius:8px;border:1px solid #2e3850;background:#20273a;color:#8899bb;font-size:11px;font-weight:700;padding:7px 12px;width:100%;letter-spacing:0.04em;}
   .divider{border-top:1px solid #2e3850;margin:0 0 14px;}
   .section-label{font-size:11px;font-weight:700;color:#4a5878;letter-spacing:0.08em;margin-bottom:10px;}
-  .notes-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:calc(100vh - 460px);}
+  .notes-container{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+  .notes-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
   .note-empty{color:#3d4f6e;font-size:11px;text-align:center;padding:16px 0;font-style:italic;}
   .note-item{border-radius:6px;padding:7px 8px;}
   .note-header{display:flex;align-items:center;gap:5px;margin-bottom:3px;}
@@ -104,9 +107,9 @@
   .note-time{font-size:9px;color:#3d4f6e;margin-left:auto;}
   .note-del{background:none;border:none;color:#3d4f6e;font-size:12px;padding:0 0 0 2px;line-height:1;}
   .note-text{font-size:11px;color:#cdd5e8;line-height:1.4;}
-  .tag-btns{display:flex;gap:4px;margin-bottom:6px;}
+  .tag-btns{display:flex;gap:4px;margin-bottom:6px;flex-shrink:0;}
   .tag-btn{flex:1;border:1px solid;border-radius:5px;padding:4px 3px;font-size:10px;font-weight:700;letter-spacing:0.04em;transition:all 0.12s;}
-  .note-compose{display:flex;gap:5px;}
+  .note-compose{display:flex;gap:5px;flex-shrink:0;}
   .note-input{flex:1;background:#252d3d;border:1px solid #2e3850;border-radius:6px;color:#cdd5e8;font-size:11px;padding:7px 8px;}
   .note-send{border-radius:6px;border:none;padding:7px 10px;font-weight:800;font-size:11px;}
 
@@ -116,14 +119,13 @@
   .ctx-label{color:#4a5878;font-size:10px;padding:4px 10px 2px;letter-spacing:0.07em;font-weight:700;}
   .ctx-item{padding:7px 12px;border-radius:6px;border:1px solid transparent;font-size:11px;font-weight:700;text-align:left;width:100%;}
 
-  /* ── ADD ROW ── */
   .add-row{display:flex;gap:8px;align-items:center;padding-top:12px;}
 </style>
 </head>
 <body>
 
 <!-- ══ SETUP SCREEN ══ -->
-<div id="screen-setup" class="active">
+<div id="screen-setup" class="screen active">
   <div class="splash-card">
     <div class="splash-logo"><span style="color:#60a5fa">⬡</span> RELAY</div>
     <p class="splash-sub">Restaurant Communication System</p>
@@ -155,13 +157,13 @@
 
     <div id="setup-err" class="setup-err"></div>
     <div style="font-size:10px;color:#2a3550;margin-top:16px;line-height:1.6;">
-      JSONBin is free · ~10k reads/month · open in browser — not as a Claude artifact
+      JSONBin is free · ~10k reads/month · no account needed
     </div>
   </div>
 </div>
 
 <!-- ══ MODE SCREEN ══ -->
-<div id="screen-mode">
+<div id="screen-mode" class="screen">
   <div class="splash-card">
     <div class="splash-logo"><span style="color:#60a5fa">⬡</span> RELAY</div>
 
@@ -183,13 +185,12 @@
         <span class="sub">Kitchen & Expeditors</span>
       </button>
     </div>
-    <p style="color:#2a3550;font-size:10px;margin-top:16px;letter-spacing:0.05em;">Syncs every 2 seconds · last-write-wins</p>
+    <p style="color:#2a3550;font-size:10px;margin-top:16px;letter-spacing:0.05em;">Syncs every 2 seconds</p>
   </div>
 </div>
 
 <!-- ══ APP SCREEN ══ -->
-<div id="screen-app">
-  <!-- Header -->
+<div id="screen-app" class="screen">
   <header id="app-header">
     <span id="h-accent-icon" style="font-size:20px;color:#60a5fa">⬡</span>
     <span class="h-title">RELAY</span>
@@ -200,7 +201,7 @@
     <button class="switch-btn" onclick="switchMode()">Switch Mode</button>
   </header>
   <div class="hold-banner" id="hold-banner" style="display:none">
-    ⏸ HOLD MODE — tap to hold · double-tap a held cell to release ·
+    ⏸ HOLD MODE — tap to hold · double-tap a held cell to release ·&nbsp;
     <span style="text-decoration:underline;cursor:pointer;" onclick="toggleHold()">Done</span>
   </div>
   <div class="hands-banner" id="hands-banner" style="display:none">
@@ -210,7 +211,6 @@
   </div>
 
   <div id="app-body">
-    <!-- Grid Panel -->
     <div id="grid-panel">
       <div class="panel-head">
         <span class="panel-title" id="panel-title">COURSE TRACKER</span>
@@ -222,9 +222,8 @@
       <div class="legend" id="legend"></div>
     </div>
 
-    <!-- Side Panel -->
     <div id="side-panel">
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;flex-shrink:0;">
         <button class="hands-btn" id="hands-btn" onclick="toggleHands()">
           <span class="hands-emoji" id="hands-emoji">👐</span>
           <span class="hands-label">HANDS</span>
@@ -235,7 +234,7 @@
 
       <div class="divider"></div>
 
-      <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
+      <div class="notes-container">
         <div class="section-label">SHIFT NOTES</div>
         <div class="notes-list" id="notes-list"></div>
         <div class="tag-btns" id="tag-btns"></div>
@@ -249,7 +248,6 @@
   </div>
 </div>
 
-<!-- Context Menu -->
 <div id="ctx-menu">
   <div class="ctx-label">OVERRIDE</div>
 </div>
@@ -266,7 +264,7 @@ const SD = {
   SERVED:  {foh:"Served",     boh:"Served",    color:"#93c5fd",bg:"#0c1a35",border:"#2563eb",pulse:false},
   HOLD:    {foh:"HOLD",       boh:"HOLD",      color:"#d8b4fe",bg:"#1e0d35",border:"#7c3aed",pulse:false},
 };
-const FOH_CYCLE = {NONE:"REQUEST",REQUEST:"REQUEST",FIRING:"POURING",POURING:"SERVED",PLATING:"SERVED",SERVED:"NONE"};
+const FOH_CYCLE = {NONE:"REQUEST",REQUEST:"NONE",FIRING:"POURING",POURING:"SERVED",PLATING:"SERVED",SERVED:"NONE"};
 const BOH_CYCLE = {NONE:"FIRING",REQUEST:"FIRING",FIRING:"POURING",POURING:"PLATING",PLATING:"SERVED",SERVED:"NONE"};
 
 const INIT_COURSES = ["Amuse","Appetizer","Soup / Salad","Entrée","Dessert"];
@@ -283,15 +281,15 @@ const POLL_MS=2000;
 
 // ══ STATE ══════════════════════════════════════════════════════════════════════
 let state    = JSON.parse(JSON.stringify(DEFAULT_STATE));
-let mode     = null;     // "FOH" | "BOH"
+let mode     = null;
 let holdMode = false;
 let binId    = "";
 let apiKey   = "";
 let pollInterval = null;
 let nextId   = Date.now();
-let ctxCell  = null;     // {tableId, course}
+let ctxCell  = null;
 let noteTag  = "info";
-let lastTap  = {key:"",time:0}; // double-tap detection
+let lastTap  = {key:"",time:0};
 
 // ══ JSONBIN ════════════════════════════════════════════════════════════════════
 async function binRead(){
@@ -325,7 +323,7 @@ async function binCreate(key,data){
   }catch(e){return{error:String(e)};}
 }
 
-// ══ SETUP ACTIONS ══════════════════════════════════════════════════════════════
+// ══ SETUP ══════════════════════════════════════════════════════════════════════
 async function testKey(){
   const key=document.getElementById("api-input").value.trim();
   const ks=document.getElementById("key-status");
@@ -343,8 +341,8 @@ async function testKey(){
       if(tid)fetch(`${JSONBIN_API}/b/${tid}`,{method:"DELETE",headers:{"X-Master-Key":key}}).catch(()=>{});
       ks.textContent="✓ valid";ks.style.color="#4ade80";
     }else if(r.status===401){
-      ks.textContent="✗ invalid key";ks.style.color="#f87171";
-      showSetupErr("401 Unauthorized — wrong key. Use the Master Key from jsonbin.io → Account → API Keys.");
+      ks.textContent="✗ invalid";ks.style.color="#f87171";
+      showSetupErr("401 Unauthorized — wrong key.");
     }else{
       const t=await r.text();
       ks.textContent="✗ error "+r.status;ks.style.color="#f87171";
@@ -372,19 +370,14 @@ async function joinBin(){
   setBusy(true);
   apiKey=key;binId=bid;
   const remote=await binRead();
-  if(!remote){showSetupErr("Could not read that Bin ID — check it's correct.");apiKey="";binId="";setBusy(false);return;}
+  if(!remote){showSetupErr("Could not read that Bin ID.");apiKey="";binId="";setBusy(false);return;}
   applyRemote(remote);
   setBusy(false);
   showModeScreen();
 }
 
-function showSetupErr(msg){
-  const el=document.getElementById("setup-err");
-  el.textContent=msg;el.style.display="block";
-}
-function setBusy(b){
-  document.querySelectorAll(".setup-btn,.setup-input").forEach(el=>el.disabled=b);
-}
+function showSetupErr(msg){const el=document.getElementById("setup-err");el.textContent=msg;el.style.display="block";}
+function setBusy(b){document.querySelectorAll(".setup-btn,.setup-input").forEach(el=>el.disabled=b);}
 function showModeScreen(){
   document.getElementById("screen-setup").classList.remove("active");
   document.getElementById("screen-mode").classList.add("active");
@@ -431,7 +424,6 @@ function applyRemote(remote){
 function setSyncStatus(s){
   const dot=document.getElementById("sync-dot-inner");
   const lbl=document.getElementById("sync-label");
-  const wrap=document.getElementById("sync-dot");
   if(s==="ok"){dot.style.background="#4ade80";dot.style.boxShadow="0 0 5px #4ade8088";lbl.style.color="#4ade8088";lbl.textContent="live";}
   else{dot.style.background="#f87171";dot.style.boxShadow="none";lbl.style.color="#f87171";lbl.textContent="sync err";}
 }
@@ -458,7 +450,6 @@ function renderHeader(){
   badge.textContent=foh?"🍽️ FOH":"🔥 BOH";
   badge.style.background=accentBg();badge.style.color=ac;badge.style.borderColor=accentBorder();
 
-  // chips
   const alerts=document.getElementById("h-alerts");
   alerts.innerHTML="";
   const counts={};
@@ -484,17 +475,12 @@ function renderHeader(){
     alerts.appendChild(c);
   }
 
-  // hold btn
   const hb=document.getElementById("hold-btn");
   if(holdMode){hb.style.background="#2d1260";hb.style.color="#c4b5fd";hb.style.borderColor="#7c3aed";hb.style.boxShadow="0 0 0 3px #4c288966";hb.textContent="⏸ Tap a cell…";}
   else{hb.style.background="#1e0d35";hb.style.color="#a78bfa";hb.style.borderColor="#4c2889";hb.style.boxShadow="none";hb.textContent="⏸ HOLD";}
 
   document.getElementById("hold-banner").style.display=holdMode?"block":"none";
-
-  // HANDS banner (FOH only)
   document.getElementById("hands-banner").style.display=(state.hands&&isFOH())?"flex":"none";
-
-  // panel hint
   document.getElementById("panel-title").style.color=ac;
   document.getElementById("panel-hint").textContent=foh
     ?"FOH: — → Request · (await BOH) · Firing → Pouring → Served"
@@ -507,7 +493,6 @@ function renderGrid(){
   const table=document.getElementById("course-table");
   table.innerHTML="";
 
-  // THEAD
   const thead=document.createElement("thead");
   const hrow=document.createElement("tr");
   const corner=document.createElement("th");
@@ -522,7 +507,6 @@ function renderGrid(){
     hrow.appendChild(th);
   });
 
-  // add-course th
   const addTh=document.createElement("th");
   addTh.className="th-course";
   addTh.innerHTML=`<div style="display:flex;gap:4px;align-items:center;">
@@ -533,7 +517,6 @@ function renderGrid(){
   thead.appendChild(hrow);
   table.appendChild(thead);
 
-  // TBODY
   const tbody=document.createElement("tbody");
 
   state.tables.forEach(tbl=>{
@@ -552,7 +535,6 @@ function renderGrid(){
       const status=state.grid[tbl.id]?.[course]??S.NONE;
       const d=SD[status];
       const lbl=foh?d.foh:d.boh;
-      const locked=foh&&status===S.REQUEST&&!holdMode;
       const isHeld=status===S.HOLD;
       const isHoldTarget=holdMode&&!isHeld;
 
@@ -565,12 +547,11 @@ function renderGrid(){
       btn.style.color=isHoldTarget?"#6c3483":d.color;
       btn.style.borderColor=holdMode?"#5b2c6f":d.border;
       btn.style.borderStyle=isHoldTarget?"dashed":"solid";
-      btn.style.cursor=locked?"not-allowed":holdMode?"crosshair":"pointer";
-      btn.style.opacity=locked?"0.65":"1";
+      btn.style.cursor=holdMode?"crosshair":"pointer";
       if(isHeld)btn.style.boxShadow="0 0 0 2px #7c3aed88";
       else if(d.pulse&&!holdMode)btn.style.boxShadow=`0 0 0 2px ${d.border}66,0 2px 8px ${d.border}44`;
 
-      btn.innerHTML=`${esc(lbl)}${locked?'<span class="cell-awaiting">awaiting BOH</span>':""}`;
+      btn.innerHTML=`${esc(lbl)}`;
 
       const cellKey=`${tbl.id}:${course}`;
       btn.addEventListener("click",e=>{e.stopPropagation();tapCell(tbl.id,course,cellKey);});
@@ -580,11 +561,10 @@ function renderGrid(){
       row.appendChild(cell);
     });
 
-    row.appendChild(document.createElement("td")); // spacer
+    row.appendChild(document.createElement("td"));
     tbody.appendChild(row);
   });
 
-  // Add table row
   const addRow=document.createElement("tr");
   const addCell=document.createElement("td");
   addCell.colSpan=state.courses.length+2;
@@ -598,7 +578,6 @@ function renderGrid(){
   tbody.appendChild(addRow);
   table.appendChild(tbody);
 
-  // Legend
   const leg=document.getElementById("legend");
   leg.innerHTML="";
   Object.entries(SD).filter(([k])=>k!==S.NONE).forEach(([k,d])=>{
@@ -619,7 +598,6 @@ function renderSidePanel(){
   const ac=accent();
   const h=state.hands;
 
-  // HANDS button
   const btn=document.getElementById("hands-btn");
   const emoji=document.getElementById("hands-emoji");
   const sub=document.getElementById("hands-sub");
@@ -642,7 +620,6 @@ function renderSidePanel(){
     dismiss.style.display="none";
   }
 
-  // note send btn color
   document.getElementById("note-send").style.background=ac;
   document.getElementById("note-send").style.color="#0d1117";
 }
@@ -678,7 +655,6 @@ function renderNotes(){
     });
   }
 
-  // tag buttons
   const tagBtns=document.getElementById("tag-btns");
   tagBtns.innerHTML="";
   [{v:"info",l:"Info",bg:"#0c1a35",border:"#2563eb",col:"#93c5fd"},
@@ -699,7 +675,6 @@ function renderNotes(){
 function tapCell(tableId,course,cellKey){
   const cur=state.grid[tableId]?.[course]??S.NONE;
 
-  // Double-tap detection for HOLD release
   const now=Date.now();
   if(cur===S.HOLD&&lastTap.key===cellKey&&now-lastTap.time<500){
     lastTap={key:"",time:0};
@@ -714,19 +689,13 @@ function tapCell(tableId,course,cellKey){
     apply({grid:ng});return;
   }
   if(cur===S.HOLD)return;
-  if(cur===S.REQUEST&&isFOH())return;
   const cycle=isFOH()?FOH_CYCLE:BOH_CYCLE;
   const next=cycle[cur]??S.NONE;
   const ng={...state.grid,[tableId]:{...state.grid[tableId],[course]:next}};
   apply({grid:ng});
 }
 
-function toggleHold(){
-  holdMode=!holdMode;
-  renderHeader();
-  renderGrid();
-}
-
+function toggleHold(){holdMode=!holdMode;renderHeader();renderGrid();}
 function toggleHands(){apply({hands:!state.hands});}
 function dismissHands(){apply({hands:false});}
 
@@ -767,9 +736,7 @@ function sendNote(){
   apply({notes:nn});
   if(input)input.value="";
 }
-function deleteNote(id){
-  apply({notes:state.notes.filter(n=>n.id!==id)});
-}
+function deleteNote(id){apply({notes:state.notes.filter(n=>n.id!==id)});}
 
 // ══ CONTEXT MENU ═══════════════════════════════════════════════════════════════
 function openCtx(e,tableId,course){
@@ -795,7 +762,6 @@ function forceCell(tableId,course,status){
 }
 document.addEventListener("click",()=>{document.getElementById("ctx-menu").classList.remove("open");});
 
-// ══ UTILS ═════════════════════════════════════════════════════════════════════
 function mkEl(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
 function esc(s){const d=document.createElement("div");d.textContent=String(s??"")||"";return d.innerHTML;}
 </script>
